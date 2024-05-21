@@ -1,10 +1,15 @@
 package com.adaland.springsecurity.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,5 +34,10 @@ public class Game implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
     @Column(name = "status", nullable = true)
-    private GameStatus status=GameStatus.AVAILABLE;
+    @Enumerated(value = EnumType.STRING)
+    private GameStatus status = GameStatus.AVAILABLE;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gameCategory_id", referencedColumnName = "id")
+    private GameCategory gameCategory;
+
 }

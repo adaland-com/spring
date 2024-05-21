@@ -28,7 +28,7 @@ public class GameController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-//    @RolesAllowed({"ROLE_OPERATOR", "ROLE_ADMIN"})
+//    @RolesAllowed({"ROLE_CUSTOMER", "ROLE_ADMIN"})
     public List<GameDto> getAll() {
         return gameService.findAll();
     }
@@ -42,28 +42,26 @@ public class GameController {
 
     @GetMapping("/title={gameTitle}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-//    @RolesAllowed({"ROLE_OPERATOR", "ROLE_USER", "ROLE_ADMIN"})
-    public List<GameDto> findByTitle(@PathVariable String gameTitle ) {
-        return gameService.findByTitle(gameTitle);}
+    public List<GameDto> findByTitle(@PathVariable String gameTitle) {
+        return gameService.findByTitle(gameTitle);
+    }
 
 
     @PostMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
-//    @RolesAllowed({"ROLE_OPERATOR", "ROLE_USER", "ROLE_ADMIN"})
-    public GameDto createGame(@RequestBody GameCreationDto game ) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public GameDto createGame(@RequestBody GameCreationDto game) {
         return gameService.createGame(game);
     }
 
     @PutMapping("/{gameId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-//    @RolesAllowed({"ROLE_OPERATOR", "ROLE_USER", "ROLE_ADMIN"})
-    public GameDto updateGame(@PathVariable long gameId,@RequestBody GameUpdateDto game ) {
-        return gameService.updateGame(gameId,game);
+    public GameDto updateGame(@PathVariable long gameId, @RequestBody GameUpdateDto game) {
+        return gameService.updateGame(gameId, game);
     }
+
     @DeleteMapping("/{gameId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-//    @RolesAllowed({"ROLE_OPERATOR", "ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<String> deleteGame(@PathVariable long gameId ) {
+    public ResponseEntity<String> deleteGame(@PathVariable long gameId) {
         return gameService.deleteGame(gameId);
     }
 
