@@ -1,4 +1,4 @@
-package com.adaland.springsecurity.authentication;
+package com.adaland.springsecurity.model.auth;
 
 public class AuthenticationResponse {
 

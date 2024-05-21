@@ -1,4 +1,4 @@
-package com.adaland.springsecurity.user;
+package com.adaland.springsecurity.model.auth;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;

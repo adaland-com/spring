@@ -1,7 +1,7 @@
 package com.adaland.springsecurity.config;
 
-import com.adaland.springsecurity.user.User;
-import com.adaland.springsecurity.user.UserRepository;
+import com.adaland.springsecurity.model.auth.User;
+import com.adaland.springsecurity.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

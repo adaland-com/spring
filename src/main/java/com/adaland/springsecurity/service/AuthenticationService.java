@@ -1,7 +1,9 @@
-package com.adaland.springsecurity.authentication;
+package com.adaland.springsecurity.service;
 
-import com.adaland.springsecurity.user.User;
-import com.adaland.springsecurity.user.UserRepository;
+import com.adaland.springsecurity.model.auth.AuthenticationRequest;
+import com.adaland.springsecurity.model.auth.AuthenticationResponse;
+import com.adaland.springsecurity.model.auth.User;
+import com.adaland.springsecurity.repository.UserRepository;
 import com.adaland.springsecurity.config.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

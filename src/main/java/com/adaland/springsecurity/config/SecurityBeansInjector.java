@@ -1,6 +1,6 @@
 package com.adaland.springsecurity.config;
 
-import com.adaland.springsecurity.user.UserRepository;
+import com.adaland.springsecurity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

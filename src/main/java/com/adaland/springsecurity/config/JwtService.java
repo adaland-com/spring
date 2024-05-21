@@ -1,6 +1,6 @@
 package com.adaland.springsecurity.config;
 
-import com.adaland.springsecurity.user.User;
+import com.adaland.springsecurity.model.auth.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -1,6 +1,9 @@
-package com.adaland.springsecurity.authentication;
+package com.adaland.springsecurity.controller;
 
-import com.adaland.springsecurity.user.User;
+import com.adaland.springsecurity.model.auth.AuthenticationRequest;
+import com.adaland.springsecurity.model.auth.AuthenticationResponse;
+import com.adaland.springsecurity.model.auth.User;
+import com.adaland.springsecurity.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

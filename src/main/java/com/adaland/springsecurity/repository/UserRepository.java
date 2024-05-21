@@ -1,5 +1,6 @@
-package com.adaland.springsecurity.user;
+package com.adaland.springsecurity.repository;
 
+import com.adaland.springsecurity.model.auth.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

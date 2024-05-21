@@ -1,4 +1,4 @@
-package com.adaland.springsecurity.user;
+package com.adaland.springsecurity.model.auth;
 
 import java.util.Arrays;
 import java.util.List;
