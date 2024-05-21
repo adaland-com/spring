@@ -1,7 +1,6 @@
 package com.adaland.springsecurity.service;
 
 
-
 import com.adaland.springsecurity.exception.EntityNotFoundException;
 import com.adaland.springsecurity.mapper.GameMapper;
 import com.adaland.springsecurity.model.Game;
@@ -27,7 +26,8 @@ public class GameService {
     private static final String CREATED_ACCOUNT = "Account created ";
     private static final String UPDATED_ACCOUNT = "Account updated ";
     private static final String DELETE_ACCOUNT = "Account deleted ";
-    @Autowired private GameRepository gameRepository;
+    @Autowired
+    private GameRepository gameRepository;
     private final GameMapper mapper;
 
     public List<GameDto> findAll() {
@@ -50,7 +50,7 @@ public class GameService {
     }
 
     public GameDto createGame(GameCreationDto gameToCreate) {
-        Game game= mapper.fromGameCreationDtoToGame(gameToCreate);
+        Game game = mapper.fromGameCreationDtoToGame(gameToCreate);
         Game savedGame = gameRepository.save(game);
         return mapper.fromGameToGameDto(savedGame);
 
@@ -66,6 +66,7 @@ public class GameService {
         return mapper.fromGameToGameDto(savedGame);
 
     }
+
     public ResponseEntity<String> deleteGame(long gameId) {
 
         Game game = gameRepository.findById(gameId)
@@ -73,9 +74,9 @@ public class GameService {
                         -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
 
 
-         gameRepository.deleteById(gameId);
-         return ResponseEntity
-                 .status(HttpStatus.OK)
-                 .build();
+        gameRepository.deleteById(gameId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
     }
 }

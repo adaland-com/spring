@@ -1,6 +1,12 @@
 package com.adaland.springsecurity.model.auth;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +29,7 @@ public class User implements UserDetails {
 
     private String name;
 
-    private  String password;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -60,7 +66,6 @@ public class User implements UserDetails {
 
         return authorities;
     }
-
 
 
 }
