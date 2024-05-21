@@ -40,9 +40,11 @@ public class SecurityFilter {
                     authConfig.requestMatchers("/error").permitAll();
 
                     authConfig.requestMatchers(HttpMethod.GET, "/products").hasAuthority(Permission.READ_ALL_PRODUCTS.name());
+                    authConfig.requestMatchers(HttpMethod.GET, "/api/**").hasRole("CUSTOMER");
                     authConfig.requestMatchers(HttpMethod.POST, "/products").hasAuthority(Permission.SAVE_ONE_PRODUCT.name());
 
-                    authConfig.anyRequest().denyAll();
+                    authConfig.anyRequest().authenticated();
+
 
 
                 });
