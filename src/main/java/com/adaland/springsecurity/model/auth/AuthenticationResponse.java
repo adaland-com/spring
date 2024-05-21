@@ -1,18 +1,12 @@
 package com.adaland.springsecurity.model.auth;
 
+
+import lombok.Data;
+
+@Data
 public class AuthenticationResponse {
 
-    private String jwt;
+    private final String jwt;
 
-    public AuthenticationResponse(String jwt) {
-        this.jwt = jwt;
-    }
 
-    public String getJwt() {
-        return jwt;
-    }
-
-    public void setJwt(String jwt) {
-        this.jwt = jwt;
-    }
 }
