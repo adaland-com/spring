@@ -1,4 +1,4 @@
-package com.stephanodev.springsecurity.user;
+package com.adaland.springsecurity.user;
 
 import java.util.Arrays;
 import java.util.List;

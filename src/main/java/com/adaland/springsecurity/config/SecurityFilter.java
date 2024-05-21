@@ -1,7 +1,7 @@
-package com.stephanodev.springsecurity.config;
+package com.adaland.springsecurity.config;
 
 
-import com.stephanodev.springsecurity.user.Permission;
+import com.adaland.springsecurity.user.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

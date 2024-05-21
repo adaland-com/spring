@@ -1,7 +1,7 @@
-package com.stephanodev.springsecurity.config;
+package com.adaland.springsecurity.config;
 
-import com.stephanodev.springsecurity.user.User;
-import com.stephanodev.springsecurity.user.UserRepository;
+import com.adaland.springsecurity.user.User;
+import com.adaland.springsecurity.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

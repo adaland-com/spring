@@ -1,4 +1,4 @@
-package com.stephanodev.springsecurity.product;
+package com.adaland.springsecurity.product;
 
 
 import jakarta.validation.Valid;

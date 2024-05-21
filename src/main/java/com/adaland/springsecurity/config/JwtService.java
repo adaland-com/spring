@@ -1,10 +1,9 @@
-package com.stephanodev.springsecurity.config;
+package com.adaland.springsecurity.config;
 
-import com.stephanodev.springsecurity.user.User;
+import com.adaland.springsecurity.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.JwtSigner;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;

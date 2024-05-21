@@ -1,4 +1,4 @@
-package com.stephanodev.springsecurity.authentication;
+package com.adaland.springsecurity.authentication;
 
 public class AuthenticationRequest {
 
