@@ -7,6 +7,7 @@ import com.adaland.springsecurity.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,14 +29,12 @@ public class GameController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-//    @RolesAllowed({"ROLE_CUSTOMER", "ROLE_ADMIN"})
     public List<GameDto> getAll() {
         return gameService.findAll();
     }
 
     @GetMapping("/{gameId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-//    @RolesAllowed({"ROLE_OPERATOR", "ROLE_USER", "ROLE_ADMIN"})
     public GameDto findById(@PathVariable long gameId) {
         return gameService.findById(gameId);
     }
@@ -49,18 +48,21 @@ public class GameController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public GameDto createGame(@RequestBody GameCreationDto game) {
         return gameService.createGame(game);
     }
 
     @PutMapping("/{gameId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public GameDto updateGame(@PathVariable long gameId, @RequestBody GameUpdateDto game) {
         return gameService.updateGame(gameId, game);
     }
 
     @DeleteMapping("/{gameId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteGame(@PathVariable long gameId) {
         return gameService.deleteGame(gameId);
     }
