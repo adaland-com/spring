@@ -13,7 +13,7 @@ public interface GameCategoryMapper {
 
     GameCategory fromGameCategoryDtoToGameCategory(GameCategoryDto source);
 
-    ;
+    GameCategory fromGameCategoryDtoToGameCategory(GameCategoryUpdateDto source);
 
 
 }

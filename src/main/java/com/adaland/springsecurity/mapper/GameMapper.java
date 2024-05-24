@@ -5,12 +5,17 @@ import com.adaland.springsecurity.model.dto.game.GameCreationDto;
 import com.adaland.springsecurity.model.dto.game.GameDto;
 import com.adaland.springsecurity.model.dto.game.GameUpdateDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 import org.springframework.stereotype.Component;
 
 @Component
 @Mapper(componentModel = "spring")
 public interface GameMapper {
+    @Mappings({
+            @Mapping(target = "categoryName", source = "gameCategory.name")
+    })
     GameDto fromGameToGameDto(Game source);
 
     Game fromGameCreationDtoToGame(GameCreationDto source);
