@@ -48,9 +48,8 @@ public class GameCategoryService {
                 .collect(Collectors.toList());
     }
 
-    public GameCategoryDto createGameCategory(String name) {
-        GameCategory gameCategory = new GameCategory();
-        gameCategory.setName(name);
+    public GameCategoryDto createGameCategory(GameCategoryUpdateDto gameCategoryUpdateDto) {
+        GameCategory gameCategory = mapper.fromGameCategoryDtoToGameCategory(gameCategoryUpdateDto);
         GameCategory savedGameCategory = gameCategoryRepository.save(gameCategory);
         return mapper.fromGameCategoryToGameCategoryDto(savedGameCategory);
 

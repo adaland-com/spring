@@ -30,6 +30,8 @@ public class GameService {
     private static final String DELETE_ACCOUNT = "Account deleted ";
     @Autowired
     private GameRepository gameRepository;
+    @Autowired
+    private GameCategoryRepository categoryRepository;
     private final GameMapper mapper;
 
     public List<GameDto> findAll() {
@@ -62,7 +64,12 @@ public class GameService {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(()
                         -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
-
+        List<GameCategory> byName = categoryRepository.findByName(update.getCategory());
+        if (byName.isEmpty())
+            throw new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "category with name: " + update.getCategory());
+        else {
+            game.setGameCategory(byName.get(0));
+        }
         Game gameUpdated = mapper.fromGameUpdateDtoToGame(game, update);
         Game savedGame = gameRepository.save(gameUpdated);
         return mapper.fromGameToGameDto(savedGame);
@@ -76,7 +83,7 @@ public class GameService {
                         -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
 
 
-        gameRepository.deleteById(gameId);
+        gameRepository.deleteById(game.getId());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();
