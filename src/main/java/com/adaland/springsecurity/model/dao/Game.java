@@ -1,4 +1,4 @@
-package com.adaland.springsecurity.model;
+package com.adaland.springsecurity.model.dao;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,15 +16,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Data
 @Entity
 @Table(name = "games")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Game implements Serializable {
+public class Game {
 
 
     @Id

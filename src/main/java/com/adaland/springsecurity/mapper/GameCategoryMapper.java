@@ -1,7 +1,8 @@
 package com.adaland.springsecurity.mapper;
 
-import com.adaland.springsecurity.model.GameCategory;
-import com.adaland.springsecurity.model.dto.GameCategoryDto;
+import com.adaland.springsecurity.model.dao.GameCategory;
+import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryDto;
+import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryUpdateDto;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 

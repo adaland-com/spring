@@ -1,7 +1,7 @@
 package com.adaland.springsecurity.controller;
 
 
-import com.adaland.springsecurity.model.Product;
+import com.adaland.springsecurity.model.dao.Product;
 import com.adaland.springsecurity.repository.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

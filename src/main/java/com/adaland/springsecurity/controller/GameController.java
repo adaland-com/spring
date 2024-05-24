@@ -1,8 +1,8 @@
 package com.adaland.springsecurity.controller;
 
-import com.adaland.springsecurity.model.dto.GameCreationDto;
-import com.adaland.springsecurity.model.dto.GameDto;
-import com.adaland.springsecurity.model.dto.GameUpdateDto;
+import com.adaland.springsecurity.model.dto.game.GameCreationDto;
+import com.adaland.springsecurity.model.dto.game.GameDto;
+import com.adaland.springsecurity.model.dto.game.GameUpdateDto;
 import com.adaland.springsecurity.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

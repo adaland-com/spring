@@ -1,4 +1,4 @@
-package com.adaland.springsecurity.model.dto;
+package com.adaland.springsecurity.model.dto.game;
 
 
 import lombok.Data;

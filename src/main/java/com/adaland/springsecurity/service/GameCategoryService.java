@@ -3,8 +3,9 @@ package com.adaland.springsecurity.service;
 
 import com.adaland.springsecurity.exception.EntityNotFoundException;
 import com.adaland.springsecurity.mapper.GameCategoryMapper;
-import com.adaland.springsecurity.model.GameCategory;
-import com.adaland.springsecurity.model.dto.GameCategoryDto;
+import com.adaland.springsecurity.model.dao.GameCategory;
+import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryDto;
+import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryUpdateDto;
 import com.adaland.springsecurity.repository.GameCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

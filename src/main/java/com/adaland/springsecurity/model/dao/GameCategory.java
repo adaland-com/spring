@@ -1,11 +1,10 @@
-package com.adaland.springsecurity.model;
+package com.adaland.springsecurity.model.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "game_category")
+@Table(name = "categories")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -28,8 +27,6 @@ public class GameCategory {
     private Long id;
     @Column(name = "name", nullable = false)
     private String name;
-    @OneToOne(mappedBy = "gameCategory")
-    private Game game;
 
 
 }

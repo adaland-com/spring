@@ -1,4 +1,4 @@
-package com.adaland.springsecurity.model;
+package com.adaland.springsecurity.model.dao;
 
 public enum GameStatus {
     RENTED, AVAILABLE, RESERVED

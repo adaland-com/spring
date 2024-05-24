@@ -1,4 +1,4 @@
-package com.adaland.springsecurity.model;
+package com.adaland.springsecurity.model.dao;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
