@@ -37,10 +37,12 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse register(User request) {
-        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+        if (userRepository.findByUsername(request.getUsername()).isPresent()
+                || userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new EntityAlreadyExistsException(EntityAlreadyExistsException.ENTITY_AlREADY_EXISTS_MESSAGE, "user withusername:" + request.getUsername());
         }
         var user = new User();
+        user.setEmail(request.getEmail());
         user.setName(request.getName());
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -68,6 +70,7 @@ public class AuthenticationService {
     private Map<String, Object> generateExtraClaims(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("name", user.getName());
+        extraClaims.put("email", user.getEmail());
         extraClaims.put("role", user.getRole().name());
         return extraClaims;
     }
