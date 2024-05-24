@@ -41,9 +41,9 @@ public class GameService {
     }
 
     public GameDto findById(long gameId) {
-        Game account = gameRepository.findById(gameId).orElseThrow(() ->
+        Game game = gameRepository.findById(gameId).orElseThrow(() ->
                 new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
-        return mapper.fromGameToGameDto(account);
+        return mapper.fromGameToGameDto(game);
     }
 
     public List<GameDto> findByTitle(String title) {
