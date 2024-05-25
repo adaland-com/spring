@@ -39,6 +39,13 @@ public class RentController {
         return rentService.findById(rentId);
     }
 
+    @GetMapping("/user")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<RentDto> findByUserId(@RequestParam long userId) {
+        return rentService.findByUserId(userId);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")

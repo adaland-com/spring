@@ -5,6 +5,8 @@ import com.adaland.springsecurity.exception.EntityNotFoundException;
 import com.adaland.springsecurity.mapper.GameMapper;
 import com.adaland.springsecurity.mapper.RentMapper;
 import com.adaland.springsecurity.model.auth.User;
+import com.adaland.springsecurity.model.dao.Game;
+import com.adaland.springsecurity.model.dao.GameStatus;
 import com.adaland.springsecurity.model.dao.Rent;
 import com.adaland.springsecurity.model.dto.rent.RentCreationDto;
 import com.adaland.springsecurity.model.dto.rent.RentDto;
@@ -12,12 +14,14 @@ import com.adaland.springsecurity.model.dto.rent.RentUpdateDto;
 import com.adaland.springsecurity.repository.GameRepository;
 import com.adaland.springsecurity.repository.RentRepository;
 import com.adaland.springsecurity.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,58 +57,62 @@ public class RentService {
         return rentMapper.fromRentToRentDto(rent);
     }
 
+    public List<RentDto> findByUserId(long userId) {
+        List<Rent> list = rentRepository.findAllByUserId(userId);
+        return list.stream().map(rentMapper::fromRentToRentDto)
+                .collect(Collectors.toList());
+    }
 
-    /*public RentDto createRent(RentCreationDto rentCreationDto) {
-        List<GameDto> gamesToRent = rentCreationDto.getGames();
-
-        List<GameDto> availableGames = gameRepository.findAll().stream()
-                .filter(game -> game.getStatus().equals(GameStatus.AVAILABLE))
-                .map(gameMapper::fromGameToGameDto)
-                .toList();
-
-        boolean areGamesAvailable = new HashSet<>(gamesToRent).containsAll(availableGames);
-        if(areGamesAvailable){
-            Rent rent = rentMapper.fromRentCreationDtoToRent(rentCreationDto);
-            gamesToRent.forEach(game->{
-                GameUpdateDto updateDto = GameUpdateDto.builder()
-                        .status(GameStatus.RENTED)
-                        .build();
-                this.gameService.updateGame(game.getId(), updateDto);
-                rent.setActive(true);
-            });
-
-            Rent savedRent = rentRepository.save(rent);
-
-            return rentMapper.fromRentToRentDto(savedRent);
-        }else {
-            throw new GameNotAvailableException(GameNotAvailableException.NOT_AVAILABLE_MESSAGE, gamesToRent.toString());
-        }
-    }*/
-
+    @Transactional
     public RentDto createRent(RentCreationDto rentCreationDto) {
 
+        Rent rentToSave = new Rent();
+
+        List<Game> chosenGamesToRent = new ArrayList<>();
+        List<Long> gamesIdToRent = rentCreationDto.getGames();
+
+        boolean isGameRented = false;
 
         User user = userRepository.findByUsername(rentCreationDto.getUsername()).orElseThrow(() ->
                 new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "user with username: " + rentCreationDto.getUsername()));
 
-        Rent rentToSave = new Rent();
         rentToSave.setUser(user);
-        rentToSave = rentMapper.fromRentCreationDtoToRent(rentToSave, rentCreationDto);
-        // TODO - calculate from games
+
         rentToSave.setCost(BigDecimal.ONE);
 
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        for (Long gameId : gamesIdToRent) {
+            Game gameToRent = gameRepository.findById(gameId).orElseThrow(() ->
+                    new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
+            if (gameToRent.getStatus().equals(GameStatus.AVAILABLE)) {
+                gameToRent.setStatus(GameStatus.RENTED);
+                chosenGamesToRent.add(gameToRent);
+                gameToRent.setRent(rentToSave);
+                gameRepository.save(gameToRent);
+                isGameRented = true;
+            }
 
-        Rent saved = rentRepository.save(rentToSave);
+        }
 
-        return rentMapper.fromRentToRentDto(saved);
+        if (isGameRented) {
+
+            rentToSave.setGames(chosenGamesToRent);
+            Rent savedRent = rentRepository.save(rentToSave);
+
+            return rentMapper.fromRentToRentDto(savedRent);
+//            rentToSave = rentMapper.updateFromRentCreationDtoToRent(rentToSave, rentCreationDto);
+
+        } else {
+            throw new RuntimeException("No game has been rented");
+        }
+
+
     }
 
     public RentDto updateRent(String rentId, RentUpdateDto update) {
         Rent rent = rentRepository.findById(rentId)
                 .orElseThrow(()
                         -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "rent with uuid: " + rentId));
-        Rent rentUpdated = rentMapper.fromRentUpdateDtoToRent(rent, update);
+        Rent rentUpdated = rentMapper.updateFromRentUpdateDtoToRent(rent, update);
         Rent savedRent = rentRepository.save(rentUpdated);
         return rentMapper.fromRentToRentDto(savedRent);
 
