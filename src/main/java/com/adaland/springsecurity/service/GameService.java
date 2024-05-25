@@ -5,6 +5,7 @@ import com.adaland.springsecurity.exception.EntityNotFoundException;
 import com.adaland.springsecurity.mapper.GameMapper;
 import com.adaland.springsecurity.model.dao.Game;
 import com.adaland.springsecurity.model.dao.GameCategory;
+import com.adaland.springsecurity.model.dao.GameStatus;
 import com.adaland.springsecurity.model.dto.game.GameCreationDto;
 import com.adaland.springsecurity.model.dto.game.GameDto;
 import com.adaland.springsecurity.model.dto.game.GameUpdateDto;
@@ -55,6 +56,7 @@ public class GameService {
 
     public GameDto createGame(GameCreationDto gameToCreate) {
         Game game = mapper.fromGameCreationDtoToGame(gameToCreate);
+        game.setStatus(GameStatus.AVAILABLE);
         Game savedGame = gameRepository.save(game);
         return mapper.fromGameToGameDto(savedGame);
 
