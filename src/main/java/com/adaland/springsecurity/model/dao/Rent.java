@@ -5,12 +5,10 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,11 +33,11 @@ public class Rent {
     @Column(unique = true, nullable = false)
     private String id = String.valueOf(UUID.randomUUID());
     @Column(name = "cost", nullable = false)
-    private BigDecimal cost=BigDecimal.ONE;
-//    @OneToMany(mappedBy = "rent", fetch = FetchType.EAGER)
-//    private List<Game> games;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private BigDecimal cost = BigDecimal.ONE;
+    @OneToMany(mappedBy = "rent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Game> games;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
     @Column(name = "creationTs", nullable = false)
     private LocalDateTime creationTs = LocalDateTime.now();
@@ -50,8 +48,8 @@ public class Rent {
     @Column(name = "endDate", nullable = false)
     private LocalDate endDate = LocalDate.from(LocalDateTime.now());
     @Column(name = "isActive", nullable = false)
-    private boolean isActive =true;
+    private boolean isActive = true;
     @Column(name = "isSettled", nullable = false)
-    private boolean isSettled =false;
+    private boolean isSettled = false;
 
 }
