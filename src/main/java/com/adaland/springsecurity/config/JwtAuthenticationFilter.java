@@ -1,5 +1,6 @@
 package com.adaland.springsecurity.config;
 
+import com.adaland.springsecurity.exception.EntityNotFoundException;
 import com.adaland.springsecurity.model.auth.User;
 import com.adaland.springsecurity.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -44,7 +45,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 4 set authenticate object inside our secuirty context
 
-        User user = userRepository.findByUsername(username).get();
+        User user = userRepository.findByUsername(username).orElseThrow(()
+                -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE,
+                "user with username: " + username));
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 username, null, user.getAuthorities()
