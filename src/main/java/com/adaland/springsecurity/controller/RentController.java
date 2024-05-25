@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,23 +21,23 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/rent", produces = "application/json")
+@RequestMapping(path = "/api/rents", produces = "application/json")
 public class RentController {
 
     private final RentService rentService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<RentDto> getAll() {
         return rentService.findAll();
     }
 
-    @GetMapping("/{gameId}")
+    @GetMapping("/{rentId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public RentDto findById(@PathVariable String rentId) {
         return rentService.findById(rentId);
     }
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
