@@ -13,9 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Mapper(componentModel = "spring")
 public interface GameMapper {
-    @Mappings({
-            @Mapping(target = "categoryName", source = "gameCategory.name")
-    })
+
     GameDto fromGameToGameDto(Game source);
 
     Game fromGameCreationDtoToGame(GameCreationDto source);

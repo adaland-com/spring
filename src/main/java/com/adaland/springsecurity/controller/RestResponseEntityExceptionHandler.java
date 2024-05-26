@@ -2,6 +2,7 @@ package com.adaland.springsecurity.controller;
 
 import com.adaland.springsecurity.exception.EntityAlreadyExistsException;
 import com.adaland.springsecurity.exception.EntityNotFoundException;
+import com.adaland.springsecurity.exception.GameNotAvailableException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class RestResponseEntityExceptionHandler
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
     @ExceptionHandler(value
-            = { EntityAlreadyExistsException.class })
+            = { EntityAlreadyExistsException.class, GameNotAvailableException.class})
     protected ResponseEntity<Object> handleEntityConflict(
             RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getLocalizedMessage();

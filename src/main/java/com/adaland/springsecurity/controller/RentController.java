@@ -53,6 +53,13 @@ public class RentController {
         return rentService.createRent(rentCreationDto);
     }
 
+    @PutMapping("?rent={rentId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RentDto returnGames(@PathVariable String rentId) {
+        return rentService.returnGamesOfRent(rentId);
+    }
+
     @PutMapping("/{rentId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")

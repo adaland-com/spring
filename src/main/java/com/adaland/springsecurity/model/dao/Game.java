@@ -35,10 +35,11 @@ public class Game {
     @Enumerated(value = EnumType.STRING)
     private GameStatus status = GameStatus.AVAILABLE;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "gameCategory_id")
+    @JoinColumn(name = "game_category_id")
     private GameCategory gameCategory;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rent_id")
     public Rent rent;
+
 
 }
