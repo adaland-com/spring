@@ -46,7 +46,7 @@ public class Rent {
     @Column(name = "startDate", nullable = false)
     private LocalDate startDate = LocalDate.from(LocalDateTime.now());
     @Column(name = "endDate", nullable = false)
-    private LocalDate endDate = LocalDate.from(LocalDateTime.now());
+    private LocalDate endDate = startDate.plusDays(7);
     @Column(name = "isActive", nullable = false)
     private boolean isActive = true;
     @Column(name = "isSettled", nullable = false)
