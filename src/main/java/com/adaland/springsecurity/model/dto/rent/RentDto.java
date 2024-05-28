@@ -17,12 +17,13 @@ import java.util.List;
 public class RentDto {
 
 
+    private final String id;
     private final UserDto user;
     private final List<GameDto> games;
     private BigDecimal cost;
     private LocalDate startDate;
     private LocalDate endDate;
-    private boolean isActive = true;
-    private boolean isSettled = false;
+    private boolean isActive;
+    private boolean isSettled;
 
 }

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RentRepository extends JpaRepository<Rent, Long> {
-    Optional<Rent> findById(String rentId);
+    Optional<Rent> findById(long rentId);
 
     @Query("SELECT r FROM Rent r WHERE r.user.id = :userId")
-    List<Rent> findAllByUserId(@Param("userId") Long userId);
+    List<Rent> findAllByUserId(@Param("userId") long userId);
 }

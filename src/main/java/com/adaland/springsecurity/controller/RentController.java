@@ -35,7 +35,7 @@ public class RentController {
 
     @GetMapping("/{rentId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public RentDto findById(@PathVariable String rentId) {
+    public RentDto findById(@PathVariable long rentId) {
         return rentService.findById(rentId);
     }
 
@@ -53,17 +53,17 @@ public class RentController {
         return rentService.createRent(rentCreationDto);
     }
 
-    @PutMapping("?rent={rentId}")
+    @PutMapping("/{rentId}/return")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public RentDto returnGames(@PathVariable String rentId) {
+    public RentDto returnGames(@PathVariable long rentId) {
         return rentService.returnGamesOfRent(rentId);
     }
 
     @PutMapping("/{rentId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public RentDto updateRent(@PathVariable String rentId, @RequestBody RentUpdateDto rentUpdateDto) {
+    public RentDto updateRent(@PathVariable long rentId, @RequestBody RentUpdateDto rentUpdateDto) {
         return rentService.updateRent(rentId, rentUpdateDto);
     }
 

@@ -14,7 +14,6 @@ import java.util.List;
 public class RentCreationDto {
 
     private LocalDate startDate;
-    private LocalDate endDate;
     private String username;
     private List<Long> games;
 

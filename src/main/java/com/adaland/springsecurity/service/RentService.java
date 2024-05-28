@@ -9,6 +9,7 @@ import com.adaland.springsecurity.model.auth.User;
 import com.adaland.springsecurity.model.dao.Game;
 import com.adaland.springsecurity.model.dao.GameStatus;
 import com.adaland.springsecurity.model.dao.Rent;
+import com.adaland.springsecurity.model.dao.RentStatus;
 import com.adaland.springsecurity.model.dto.rent.RentCreationDto;
 import com.adaland.springsecurity.model.dto.rent.RentDto;
 import com.adaland.springsecurity.model.dto.rent.RentUpdateDto;
@@ -21,7 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,9 +54,9 @@ public class RentService {
                 .collect(Collectors.toList());
     }
 
-    public RentDto findById(String rentId) {
+    public RentDto findById(long rentId) {
         Rent rent = rentRepository.findById(rentId).orElseThrow(() ->
-                new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "rent with uuid: " + rentId));
+                new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "rent with id: " + rentId));
         return rentMapper.fromRentToRentDto(rent);
     }
 
@@ -85,8 +87,6 @@ public class RentService {
             if (gameToRent.getStatus().equals(GameStatus.AVAILABLE)) {
                 gameToRent.setRent(rentToSave);
                 gameToRent.setStatus(GameStatus.RENTED);
-                rentToSave.setUser(user);
-//                rentToSave.setCost(rentToSave.getCost().add(ga));
                 chosenGamesToRent.add(gameToRent);
                 gameRepository.save(gameToRent);
                 isGameRented = true;
@@ -100,7 +100,17 @@ public class RentService {
 
         if (isGameRented) {
 
+            rentToSave.setCreationTs(LocalDateTime.now());
+
+            rentToSave.setStartDate(rentCreationDto.getStartDate());
+            rentToSave.setEndDate(rentCreationDto.getStartDate().plusDays(7));
             rentToSave.setGames(chosenGamesToRent);
+            rentToSave.setUser(user);
+            rentToSave.setStatus(RentStatus.ACTIVE);
+            rentToSave.setSettled(false);
+            rentToSave.setUpdateTs(LocalDateTime.now());
+//            rentToSave.setCost(rentToSave.getCost().add(ga));
+
             Rent savedRent = rentRepository.save(rentToSave);
 
             return rentMapper.fromRentToRentDto(savedRent);
@@ -114,7 +124,7 @@ public class RentService {
 
     }
 
-    public RentDto updateRent(String rentId, RentUpdateDto update) {
+    public RentDto updateRent(long rentId, RentUpdateDto update) {
         Rent rent = rentRepository.findById(rentId)
                 .orElseThrow(()
                         -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "rent with uuid: " + rentId));
@@ -125,23 +135,23 @@ public class RentService {
     }
 
 
-    public RentDto returnGamesOfRent(String rentId) {
+
+    public RentDto returnGamesOfRent(long rentId) {
+        log.debug("here");
         Rent rent = rentRepository.findById(rentId)
                 .orElseThrow(()
-                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "rent with uuid: " + rentId));
+                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "rent with id: " + rentId));
 
-        rent.getGames()
-                .forEach(game -> {
-                    Game gameToReturn = gameRepository.findById(game.getId()).orElseThrow(()
-                            -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with uuid: " + game.getId()));
+        rent.getGames().forEach(game->{
+            Game gameToReturn = gameRepository.findById(game.getId()).orElseThrow(()
+                    -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + game.getId()));
 
-                    gameToReturn.setStatus(GameStatus.AVAILABLE);
-                    gameRepository.save(gameToReturn);
-                });
+            gameToReturn.setStatus(GameStatus.AVAILABLE);
+            gameRepository.save(gameToReturn);
+        });
 
         rent.setSettled(true);
-        rent.setActive(false);
-        // TODO calculate if no delay
+        rent.setStatus(RentStatus.COMPLETED);
         Rent savedRent = rentRepository.save(rent);
         return rentMapper.fromRentToRentDto(savedRent);
 
