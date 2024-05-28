@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/gaj
-    username: postgres
-    password: postgres
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -22,6 +22,6 @@ spring:
           writetimeout: 1000
 security:
   jwt:
-    expiration-minutes: 43200
-    secret-key: dGhpcyBpcyBteSBzZWN1cmUga2V5IGFuZCB5b3UgY2Fubm90IGhhY2sgaXQ=
+    expiration-minutes: 60
+    secret-key: ${SECRET_KEY}
 
