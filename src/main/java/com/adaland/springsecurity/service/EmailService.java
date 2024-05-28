@@ -40,7 +40,6 @@ public class EmailService {
     public void sendMessage(
             String recipient, String subject, String text) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-
         mailMessage.setFrom(sender);
         mailMessage.setTo(recipient);
         mailMessage.setSubject(subject);
@@ -52,16 +51,20 @@ public class EmailService {
 
     public void sendWelcomeMessage(
             String recipient, String name, String username) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        if (name == null) name="";
+        SimpleMailMessage mailMessage=prepareWelcomeEmailToSent(recipient, name, username);
+        javaMailSender.send(mailMessage);
+        log.info("Message sent successfully");
+    }
 
+    private SimpleMailMessage prepareWelcomeEmailToSent(String recipient, String name, String username) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);
         mailMessage.setTo(recipient);
         mailMessage.setSubject(welcomeSubject);
-        String message = String.format(welcomeMessage, name,username);
+        String message = String.format(welcomeMessage, name, username);
         mailMessage.setText(message);
-        javaMailSender.send(mailMessage);
-        log.info("Message sent successfully");
-
+        return mailMessage;
     }
 
 }
