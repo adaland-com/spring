@@ -1,21 +1,8 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/gaj
-    username: postgres
-    password: postgres
-  jpa:
-    hibernate:
-      ddl-auto: update
-  web:
-    resources:
-      static-locations: classpath:/static/,file:frontend/dist/
-security:
-  jwt:
-    expiration-minutes: 43200
-    secret-key: dGhpcyBpcyBteSBzZWN1cmUga2V5IGFuZCB5b3UgY2Fubm90IGhhY2sgaXQ=
 server:
   port: 8001
-
+security:
+  jwt:
+    secret-key: dGhpcyBpcyBteSBzZWN1cmUga2V5IGFuZCB5b3UgY2Fubm90IGhhY2sgaXQ=
 logging:
   level:
     org:
@@ -23,4 +10,6 @@ logging:
         web: DEBUG
   file:
     name: spring.log
-
+spring:
+  profiles:
+    active: dev
