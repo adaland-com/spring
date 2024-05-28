@@ -39,7 +39,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(User request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()
                 || userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new EntityAlreadyExistsException(EntityAlreadyExistsException.ENTITY_AlREADY_EXISTS_MESSAGE, "user withusername:" + request.getUsername());
+            throw new EntityAlreadyExistsException(EntityAlreadyExistsException.ENTITY_AlREADY_EXISTS_MESSAGE, "user with username:" + request.getUsername());
         }
         var user = new User();
         user.setEmail(request.getEmail());
