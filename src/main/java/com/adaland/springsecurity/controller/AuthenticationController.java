@@ -4,6 +4,7 @@ import com.adaland.springsecurity.model.auth.AuthenticationRequest;
 import com.adaland.springsecurity.model.auth.AuthenticationResponse;
 import com.adaland.springsecurity.model.auth.User;
 import com.adaland.springsecurity.service.AuthenticationService;
+import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody User request) {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody User request) throws MessagingException {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 

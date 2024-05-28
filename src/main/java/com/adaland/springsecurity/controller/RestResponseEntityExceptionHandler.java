@@ -3,6 +3,7 @@ package com.adaland.springsecurity.controller;
 import com.adaland.springsecurity.exception.EntityAlreadyExistsException;
 import com.adaland.springsecurity.exception.EntityNotFoundException;
 import com.adaland.springsecurity.exception.GameNotAvailableException;
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class RestResponseEntityExceptionHandler
         extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value
-            = { IllegalArgumentException.class, IllegalStateException.class })
+            = { IllegalArgumentException.class, IllegalStateException.class , MessagingException.class})
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getLocalizedMessage();

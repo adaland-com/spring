@@ -7,6 +7,8 @@ import com.adaland.springsecurity.model.auth.AuthenticationRequest;
 import com.adaland.springsecurity.model.auth.AuthenticationResponse;
 import com.adaland.springsecurity.model.auth.User;
 import com.adaland.springsecurity.repository.UserRepository;
+import jakarta.mail.MessagingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class AuthenticationService {
 
     @Autowired
@@ -28,6 +31,9 @@ public class AuthenticationService {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private EmailService emailService;
+
 
     private final PasswordEncoder passwordEncoder;
 
@@ -36,7 +42,7 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse register(User request) {
+    public AuthenticationResponse register(User request)  {
         if (userRepository.findByUsername(request.getUsername()).isPresent()
                 || userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new EntityAlreadyExistsException(EntityAlreadyExistsException.ENTITY_AlREADY_EXISTS_MESSAGE, "user with username:" + request.getUsername());
@@ -48,6 +54,7 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());
         userRepository.save(user);
+        emailService.sendWelcomeMessage(user.getEmail(), user.getName(), user.getUsername());
         String token = jwtService.generateToken(user, generateExtraClaims(user));
         return new AuthenticationResponse(token);
     }
