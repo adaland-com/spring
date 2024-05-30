@@ -40,7 +40,7 @@ public class GameCategoryController {
 
     @GetMapping("/name={name}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<GameCategoryDto> findByName(@PathVariable String name) {
+    public GameCategoryDto findByName(@PathVariable String name) {
         return gameCategoryService.findByName(name);
     }
 

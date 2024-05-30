@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,12 +67,11 @@ public class GameService {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(()
                         -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
-        List<GameCategory> byName = categoryRepository.findByName(update.getCategory());
-        if (byName.isEmpty())
-            throw new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "category with name: " + update.getCategory());
-        else {
-            game.setGameCategory(byName.get(0));
-        }
+        GameCategory gameCategory= categoryRepository.findByName(update.getCategory())
+                 .orElseThrow(()
+                         -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game category with name: " + update.getCategory()));
+
+        game.setGameCategory(gameCategory);
         Game gameUpdated = mapper.fromGameUpdateDtoToGame(game, update);
         Game savedGame = gameRepository.save(gameUpdated);
         return mapper.fromGameToGameDto(savedGame);

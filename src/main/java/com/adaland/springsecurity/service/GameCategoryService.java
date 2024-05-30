@@ -22,9 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GameCategoryService {
 
-    private static final String CREATED_ACCOUNT = "Account created ";
-    private static final String UPDATED_ACCOUNT = "Account updated ";
-    private static final String DELETE_ACCOUNT = "Account deleted ";
+
     @Autowired
     private GameCategoryRepository gameCategoryRepository;
     private final GameCategoryMapper mapper;
@@ -36,16 +34,15 @@ public class GameCategoryService {
     }
 
     public GameCategoryDto findById(long gameId) {
-        GameCategory account = gameCategoryRepository.findById(gameId).orElseThrow(() ->
-                new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
-        return mapper.fromGameCategoryToGameCategoryDto(account);
+        GameCategory gameCategory = gameCategoryRepository.findById(gameId).orElseThrow(() ->
+                new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID + gameId));
+        return mapper.fromGameCategoryToGameCategoryDto(gameCategory);
     }
 
-    public List<GameCategoryDto> findByName(String name) {
-        return gameCategoryRepository.findByName(name)
-                .stream()
-                .map(mapper::fromGameCategoryToGameCategoryDto)
-                .collect(Collectors.toList());
+    public GameCategoryDto findByName(String name) {
+        GameCategory gameCategory= gameCategoryRepository.findByName(name).orElseThrow(() ->
+                new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_NAME + name));
+        return mapper.fromGameCategoryToGameCategoryDto(gameCategory);
     }
 
     public GameCategoryDto createGameCategory(GameCategoryUpdateDto gameCategoryUpdateDto) {
