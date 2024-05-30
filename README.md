@@ -15,7 +15,7 @@ Java 17, PostgresSQL, Postman
 [ ] Secret key: SECRET_KEY
 # DEV
 Install dependecies
-`./mvnw clean install`
+`./mvnw clean install -DDB_USERNAME= -DDB_PASSWORD= -DMAIL_ADDRESS= -DMAIL_PASSWORD= -DSECRET_KEY=`
 Run with dev profile
 `./mvnw spring-boot:run -Dspring.profiles.active=dev`
 
