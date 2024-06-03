@@ -33,9 +33,9 @@ public class GameCategoryService {
                 .collect(Collectors.toList());
     }
 
-    public GameCategoryDto findById(long gameId) {
-        GameCategory gameCategory = gameCategoryRepository.findById(gameId).orElseThrow(() ->
-                new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID + gameId));
+    public GameCategoryDto findById(long gameCategoryId) {
+        GameCategory gameCategory = gameCategoryRepository.findById(gameCategoryId).orElseThrow(() ->
+                new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID + gameCategoryId));
         return mapper.fromGameCategoryToGameCategoryDto(gameCategory);
     }
 
