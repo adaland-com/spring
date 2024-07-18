@@ -59,7 +59,7 @@ public class GameCategoryService {
     public GameCategoryDto updateGameCategory(long gameCategoryId, GameCategoryDto update) {
         GameCategory gameCategory = gameCategoryRepository.findById(gameCategoryId)
                 .orElseThrow(()
-                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID, "gameCategory with id: " + gameCategoryId));
+                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID, String.valueOf(gameCategoryId)));
 
         GameCategory gameUpdated = mapper.fromGameCategoryDtoToGameCategory(update);
         GameCategory savedGame = gameCategoryRepository.save(gameUpdated);

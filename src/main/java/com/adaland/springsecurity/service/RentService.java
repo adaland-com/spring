@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class RentService {
 
     public RentDto findById(long rentId) {
         Rent rent = rentRepository.findById(rentId).orElseThrow(() ->
-                new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "rent with id: " + rentId));
+                new EntityNotFoundException(EntityNotFoundException.ENTITY_RENT_NOT_FOUND_BY_ID, String.valueOf(rentId)));
         return rentMapper.fromRentToRentDto(rent);
     }
 
@@ -76,22 +75,21 @@ public class RentService {
         boolean isGameRented = false;
 
         User user = userRepository.findByUsername(rentCreationDto.getUsername()).orElseThrow(() ->
-                new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "user with username: " + rentCreationDto.getUsername()));
+                new EntityNotFoundException(EntityNotFoundException.ENTITY_USER_NOT_FOUND, rentCreationDto.getUsername()));
 
 
         StringBuilder message = new StringBuilder();
 
         for (Long gameId : gamesIdToRent) {
             Game gameToRent = gameRepository.findById(gameId).orElseThrow(() ->
-                    new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
+                    new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_NOT_FOUND_BY_ID, String.valueOf(gameId)));
             if (gameToRent.getStatus().equals(GameStatus.AVAILABLE)) {
                 gameToRent.setRent(rentToSave);
                 gameToRent.setStatus(GameStatus.RENTED);
                 chosenGamesToRent.add(gameToRent);
                 gameRepository.save(gameToRent);
                 isGameRented = true;
-            }
-            else{
+            } else {
                 message.append(gameToRent.getTitle()).append(" ");
             }
 
@@ -118,33 +116,21 @@ public class RentService {
 
         } else {
 
-            throw new GameNotAvailableException(GameNotAvailableException.NOT_AVAILABLE_MESSAGE,message.toString());
+            throw new GameNotAvailableException(GameNotAvailableException.NOT_AVAILABLE_MESSAGE, message.toString());
         }
 
 
     }
 
-    public RentDto updateRent(long rentId, RentUpdateDto update) {
-        Rent rent = rentRepository.findById(rentId)
-                .orElseThrow(()
-                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "rent with uuid: " + rentId));
-        Rent rentUpdated = rentMapper.updateFromRentUpdateDtoToRent(rent, update);
-        Rent savedRent = rentRepository.save(rentUpdated);
-        return rentMapper.fromRentToRentDto(savedRent);
-
-    }
-
-
 
     public RentDto returnGamesOfRent(long rentId) {
-        log.debug("here");
         Rent rent = rentRepository.findById(rentId)
                 .orElseThrow(()
-                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "rent with id: " + rentId));
+                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_RENT_NOT_FOUND_BY_ID, String.valueOf(rentId)));
 
-        rent.getGames().forEach(game->{
+        rent.getGames().forEach(game -> {
             Game gameToReturn = gameRepository.findById(game.getId()).orElseThrow(()
-                    -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + game.getId()));
+                    -> new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_NOT_FOUND_BY_ID, String.valueOf(game.getId())));
 
             gameToReturn.setStatus(GameStatus.AVAILABLE);
             gameRepository.save(gameToReturn);

@@ -7,7 +7,6 @@ import com.adaland.springsecurity.model.auth.AuthenticationRequest;
 import com.adaland.springsecurity.model.auth.AuthenticationResponse;
 import com.adaland.springsecurity.model.auth.User;
 import com.adaland.springsecurity.repository.UserRepository;
-import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,10 +41,10 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse register(User request)  {
+    public AuthenticationResponse register(User request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()
                 || userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new EntityAlreadyExistsException(EntityAlreadyExistsException.ENTITY_AlREADY_EXISTS_MESSAGE, "user with username:" + request.getUsername());
+            throw new EntityAlreadyExistsException(EntityAlreadyExistsException.USER_AlREADY_EXISTS_MESSAGE, request.getUsername());
         }
         var user = new User();
         user.setEmail(request.getEmail());
@@ -66,7 +65,7 @@ public class AuthenticationService {
         );
         authenticationManager.authenticate(authToken);
         if (userRepository.findByUsername(authenticationRequest.getUsername()).isEmpty()) {
-            throw new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "user " + authenticationRequest.getUsername());
+            throw new EntityNotFoundException(EntityNotFoundException.ENTITY_USER_NOT_FOUND, authenticationRequest.getUsername());
         }
         User user = userRepository.findByUsername(authenticationRequest.getUsername()).get();
         String jwt = jwtService.generateToken(user, generateExtraClaims(user));
