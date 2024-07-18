@@ -60,12 +60,7 @@ public class RentController {
         return rentService.returnGamesOfRent(rentId);
     }
 
-    @PutMapping("/{rentId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public RentDto updateRent(@PathVariable long rentId, @RequestBody RentUpdateDto rentUpdateDto) {
-        return rentService.updateRent(rentId, rentUpdateDto);
-    }
+
 
 
 }
