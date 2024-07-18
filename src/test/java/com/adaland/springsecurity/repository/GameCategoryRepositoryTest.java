@@ -25,7 +25,7 @@ class GameCategoryRepositoryTest {
     @Autowired
     private GameCategoryRepository gameCategoryRepository;
 
-    String existingCategoryName="test category";
+    String existingCategoryName = "test category";
 
     @BeforeEach
     void setUp() {
@@ -57,5 +57,24 @@ class GameCategoryRepositoryTest {
 
         // assert
         assertTrue(found.isEmpty());
+    }
+
+    @Test
+    void givenGameCategoryCreated_whenUpdate_thenSuccess() {
+        GameCategory gameCategory = GameCategory.builder().name("category name").build();
+        String newName = "new category name";
+        gameCategory.setName(newName);
+        entityManager.persist(gameCategory);
+        gameCategoryRepository.save(gameCategory);
+            assertThat(entityManager.find(GameCategory.class, gameCategory.getId()).getName()).isEqualTo(newName);
+    }
+
+    @Test
+    void givenGameCategoryCreated_whenDelete_thenSuccess() {
+        GameCategory gameCategory = GameCategory.builder().name("category name").build();
+        entityManager.persist(gameCategory);
+        gameCategoryRepository.delete(gameCategory);
+        assertThat(entityManager.find(GameCategory.class, gameCategory.getId())).isNull();
+
     }
 }
