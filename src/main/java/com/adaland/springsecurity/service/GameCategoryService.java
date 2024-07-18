@@ -1,6 +1,7 @@
 package com.adaland.springsecurity.service;
 
 
+import com.adaland.springsecurity.exception.EntityAlreadyExistsException;
 import com.adaland.springsecurity.exception.EntityNotFoundException;
 import com.adaland.springsecurity.mapper.GameCategoryMapper;
 import com.adaland.springsecurity.model.dao.GameCategory;
@@ -33,29 +34,32 @@ public class GameCategoryService {
                 .collect(Collectors.toList());
     }
 
-    public GameCategoryDto findById(long gameId) {
-        GameCategory gameCategory = gameCategoryRepository.findById(gameId).orElseThrow(() ->
-                new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID + gameId));
+    public GameCategoryDto findById(long gameCategoryId) {
+        GameCategory gameCategory = gameCategoryRepository.findById(gameCategoryId).orElseThrow(() ->
+                new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID + gameCategoryId));
         return mapper.fromGameCategoryToGameCategoryDto(gameCategory);
     }
 
     public GameCategoryDto findByName(String name) {
-        GameCategory gameCategory= gameCategoryRepository.findByName(name).orElseThrow(() ->
-                new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_NAME + name));
+        GameCategory gameCategory = gameCategoryRepository.findByName(name).orElseThrow(() ->
+                new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_NAME, name));
         return mapper.fromGameCategoryToGameCategoryDto(gameCategory);
     }
 
     public GameCategoryDto createGameCategory(GameCategoryUpdateDto gameCategoryUpdateDto) {
+        if (gameCategoryRepository.findByName(gameCategoryUpdateDto.getName()).isPresent()) {
+            throw new EntityAlreadyExistsException(EntityAlreadyExistsException.GAME_CATEGORY_AlREADY_EXISTS_MESSAGE, gameCategoryUpdateDto.getName());
+        }
         GameCategory gameCategory = mapper.fromGameCategoryDtoToGameCategory(gameCategoryUpdateDto);
         GameCategory savedGameCategory = gameCategoryRepository.save(gameCategory);
         return mapper.fromGameCategoryToGameCategoryDto(savedGameCategory);
 
     }
 
-    public GameCategoryDto updateGameCategory(long gameId, GameCategoryDto update) {
-        GameCategory gameCategory = gameCategoryRepository.findById(gameId)
+    public GameCategoryDto updateGameCategory(long gameCategoryId, GameCategoryDto update) {
+        GameCategory gameCategory = gameCategoryRepository.findById(gameCategoryId)
                 .orElseThrow(()
-                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
+                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID, "gameCategory with id: " + gameCategoryId));
 
         GameCategory gameUpdated = mapper.fromGameCategoryDtoToGameCategory(update);
         GameCategory savedGame = gameCategoryRepository.save(gameUpdated);
@@ -63,14 +67,14 @@ public class GameCategoryService {
 
     }
 
-    public ResponseEntity<String> deleteGameCategory(long gameId) {
+    public ResponseEntity<String> deleteGameCategory(long gameCategoryId) {
 
-        GameCategory gameCategory = gameCategoryRepository.findById(gameId)
+        GameCategory gameCategory = gameCategoryRepository.findById(gameCategoryId)
                 .orElseThrow(()
-                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
+                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID, String.valueOf(gameCategoryId)));
 
 
-        gameCategoryRepository.deleteById(gameId);
+        gameCategoryRepository.deleteById(gameCategoryId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();

@@ -66,10 +66,10 @@ public class GameService {
     public GameDto updateGame(long gameId, GameUpdateDto update) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(()
-                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
+                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_NOT_FOUND_BY_ID,  String.valueOf(gameId)));
         GameCategory gameCategory= categoryRepository.findByName(update.getCategory())
                  .orElseThrow(()
-                         -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game category with name: " + update.getCategory()));
+                         -> new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_NAME, update.getCategory()));
 
         game.setGameCategory(gameCategory);
         Game gameUpdated = mapper.fromGameUpdateDtoToGame(game, update);
@@ -82,12 +82,12 @@ public class GameService {
 
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(()
-                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_NOT_FOUND_MESSAGE, "game with id: " + gameId));
+                        -> new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_NOT_FOUND_BY_ID, String.valueOf(gameId)));
 
 
         gameRepository.deleteById(game.getId());
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .build();
+                .body("Game deleted");
     }
 }
