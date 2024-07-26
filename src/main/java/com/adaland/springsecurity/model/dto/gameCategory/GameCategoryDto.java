@@ -1,10 +1,11 @@
 package com.adaland.springsecurity.model.dto.gameCategory;
 
-import com.adaland.springsecurity.model.dao.GameCategory;
+import lombok.Builder;
 import lombok.Data;
 
 
 @Data
+@Builder
 public class GameCategoryDto {
 
     private long id;
