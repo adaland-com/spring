@@ -23,10 +23,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GameCategoryService {
 
-
     @Autowired
     private GameCategoryRepository gameCategoryRepository;
-    private final GameCategoryMapper mapper;
+    @Autowired
+    private GameCategoryMapper mapper;
 
     public List<GameCategoryDto> findAll() {
         return gameCategoryRepository.findAll().stream()
