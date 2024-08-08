@@ -10,12 +10,13 @@ Simple Spring App to rent board games currently only backend part
 Java 17, PostgresSQL, Postman 
 ## How to start?
 ## Prepare environment variables
-[ ] Postgres user: DB_USERNAME, DB_PASSWORD
-[ ] Gmail account: MAIL_ADDRESS, MAIL_PASSWORD
-[ ] Secret key: SECRET_KEY
+- Postgres user: DB_USERNAME, DB_PASSWORD
+- Gmail account: MAIL_ADDRESS, MAIL_PASSWORD
+- Secret key: SECRET_KEY
 # DEV
 Install dependecies
 `./mvnw clean install -DDB_USERNAME= -DDB_PASSWORD= -DMAIL_ADDRESS= -DMAIL_PASSWORD= -DSECRET_KEY=`
+
 Run with dev profile
 `./mvnw spring-boot:run -Dspring.profiles.active=dev`
 
