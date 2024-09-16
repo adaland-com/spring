@@ -2,7 +2,7 @@ package com.adaland.springsecurity.controller;
 
 import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryDto;
 import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryUpdateDto;
-import com.adaland.springsecurity.service.GameCategoryService;
+import com.adaland.springsecurity.service.impl.GameCategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,24 +24,24 @@ import java.util.List;
 @RequestMapping(path = "/api/game_categories", produces = "application/json")
 public class GameCategoryController {
 
-    private final GameCategoryService gameCategoryService;
+    private final GameCategoryServiceImpl gameCategoryServiceImpl;
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     public List<GameCategoryDto> getAll() {
-        return gameCategoryService.findAll();
+        return gameCategoryServiceImpl.findAll();
     }
 
     @GetMapping("/{gameCategoryId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public GameCategoryDto findById(@PathVariable long gameCategoryId) {
-        return gameCategoryService.findById(gameCategoryId);
+        return gameCategoryServiceImpl.findById(gameCategoryId);
     }
 
     @GetMapping("/name={name}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public GameCategoryDto findByName(@PathVariable String name) {
-        return gameCategoryService.findByName(name);
+        return gameCategoryServiceImpl.findByName(name);
     }
 
 
@@ -49,21 +49,21 @@ public class GameCategoryController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public GameCategoryDto createGameCategory(@RequestBody GameCategoryUpdateDto name) {
-        return gameCategoryService.createGameCategory(name);
+        return gameCategoryServiceImpl.createGameCategory(name);
     }
 
     @PutMapping("/{gameCategoryId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public GameCategoryDto updateGameCategory(@PathVariable long gameCategoryId, @RequestBody GameCategoryDto game) {
-        return gameCategoryService.updateGameCategory(gameCategoryId, game);
+        return gameCategoryServiceImpl.updateGameCategory(gameCategoryId, game);
     }
 
     @DeleteMapping("/{gameCategoryId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteGameCategory(@PathVariable long gameCategoryId) {
-        return gameCategoryService.deleteGameCategory(gameCategoryId);
+        return gameCategoryServiceImpl.deleteGameCategory(gameCategoryId);
     }
 
 }
