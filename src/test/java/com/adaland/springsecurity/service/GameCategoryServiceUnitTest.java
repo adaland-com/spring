@@ -84,7 +84,7 @@ class GameCategoryServiceUnitTest {
 
     }
     @Test
-    public void givenGameCategoryObject_whenGetGameCategoryById_thenThrowException() {
+    public void givenGameCategoryObject_whenFindByIdGameCategory_thenThrowException() {
         long gameCategoryId = 1;
 
         when(gameCategoryRepository.findById(gameCategoryId)).thenThrow(new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID,String.valueOf(gameCategoryId)));
@@ -92,15 +92,6 @@ class GameCategoryServiceUnitTest {
         assertThatThrownBy(() -> gameCategoryServiceImpl.findById(gameCategoryId))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID, gameCategoryId);
-
-    }
-
-
-    @Test
-    public void whenFindById_shouldThrowsException() {
-        long id = 2;
-
-        assertThrowsExactly(EntityNotFoundException.class, () -> gameCategoryServiceImpl.findById(id));
 
     }
 
@@ -128,7 +119,18 @@ class GameCategoryServiceUnitTest {
         assertThat(result).usingRecursiveComparison().isEqualTo(gameCategoryDto);
 
     }
+    @Test
+    public void givenGameCategoryObject_whenFindByNameGameCategory_thenThrowException() {
 
+        String gameCategoryName = "family";
+
+        when(gameCategoryRepository.findByName(gameCategoryName)).thenThrow(new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_NAME,gameCategoryName));
+
+        assertThatThrownBy(() -> gameCategoryServiceImpl.findByName(gameCategoryName))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_NAME, gameCategoryName);
+
+    }
     @Test
     public void whenCreateGameCategory_shouldReturnGameCategoryDto() {
         GameCategory gameCategory = GameCategory.builder()
