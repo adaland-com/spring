@@ -1,6 +1,8 @@
 package com.adaland.springsecurity.repository;
 
+import com.adaland.springsecurity.model.dao.Game;
 import com.adaland.springsecurity.model.dao.GameCategory;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,64 +21,112 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class GameCategoryRepositoryTest {
-
-
-    @Autowired
-    private TestEntityManager entityManager;
+    
 
     @Autowired
     private GameCategoryRepository gameCategoryRepository;
 
     String existingCategoryName = "test category";
+    
 
-    @BeforeEach
-    void setUp() {
-        GameCategory gameCategoryToAdd = new GameCategory();
-        gameCategoryToAdd.setName(existingCategoryName);
+    @Test
+    public void givenGameCategoryObject_whenSave_thenReturnSavedGameCategory() {
+        String gameCategoryName="cooperative";
+        GameCategory gameCategory = GameCategory.builder()
+                .name(gameCategoryName)
+                .build();
 
-        entityManager.persist(gameCategoryToAdd);
+        GameCategory savedGameCategory = gameCategoryRepository.save(gameCategory);
+        
+        assertThat(savedGameCategory).isNotNull();
+        assertThat(savedGameCategory.getName()).isEqualTo(gameCategoryName);
     }
 
     @Test
-    public void whenFindByName_thenReturnGameCategory() {
-        // arrange
-        String gameCategoryName = existingCategoryName;
+    public void given_whenFindAll_thenReturnListGameCategory() {
+        String gameCategoryName="cooperative";
+        GameCategory gameCategory = GameCategory.builder()
+                .name(gameCategoryName)
+                .build();
 
-        // act
-        GameCategory found = gameCategoryRepository.findByName(gameCategoryName).get();
+        String gameCategoryName2="family";
+        GameCategory gameCategory2 = GameCategory.builder()
+                .name(gameCategoryName2)
+                .build();
 
-        // assert
-        assertThat(found.getName()).isEqualTo(gameCategoryName);
+        GameCategory savedGameCategory = gameCategoryRepository.save(gameCategory);
+        GameCategory savedGameCategory2 = gameCategoryRepository.save(gameCategory2);
+        
+
+        List<GameCategory> orderList = gameCategoryRepository.findAll();
+
+        assertThat(orderList.size()).isEqualTo(2);
     }
+
+    @Test
+    public void givenGameCategoryObject_whenFindById_thenReturnGameCategory() {
+        
+        String gameCategoryName="family";
+        GameCategory gameCategory = GameCategory.builder()
+                .name(gameCategoryName)
+                .build();
+
+        GameCategory savedGameCategory = gameCategoryRepository.save(gameCategory);
+        
+        GameCategory foundGameCategory = gameCategoryRepository.findById(savedGameCategory.getId()).orElse(null);
+
+        assertThat(foundGameCategory).isNotNull();
+        assertThat(foundGameCategory.getName()).isEqualTo(gameCategoryName);
+
+    }
+
+    @Test
+    public void givenGameCategoryObject_whenUpdateGameCategory_thenReturnUpdatedGameCategory() {
+        String gameCategoryName="family";
+        GameCategory gameCategory = GameCategory.builder()
+                .name(gameCategoryName)
+                .build();
+        String gameCategoryUpdatedName="logical";
+
+        GameCategory savedGameCategory = gameCategoryRepository.save(gameCategory);
+        GameCategory foundGameCategory = gameCategoryRepository.findById(savedGameCategory.getId()).orElse(null);
+
+        savedGameCategory.setName(gameCategoryUpdatedName);
+        GameCategory updatedGameCategory = gameCategoryRepository.save(foundGameCategory);
+
+        assertThat(updatedGameCategory).isNotNull();
+        assertThat(updatedGameCategory.getName()).isEqualTo(gameCategoryUpdatedName);
+
+    }
+
+
 
     @Test
     public void whenFindByNonExistingGameCategory_thenThrowsException() {
-        // arrange
+      
         String gameCategoryName = "nonexisting";
-
-        // act
+     
         Optional<GameCategory> found = gameCategoryRepository.findByName(gameCategoryName);
-
-        // assert
+        
         assertTrue(found.isEmpty());
     }
 
     @Test
-    void givenGameCategoryCreated_whenUpdate_thenSuccess() {
-        GameCategory gameCategory = GameCategory.builder().name("category name").build();
-        String newName = "new category name";
-        gameCategory.setName(newName);
-        entityManager.persist(gameCategory);
+    public void givenGameCategoryObject_whenDelete_thenReturnGameCategoryIsEmpty() {
+
+        String gameCategoryName="logical";
+        GameCategory gameCategory = GameCategory.builder()
+                .name(gameCategoryName)
+                .build();
+
         gameCategoryRepository.save(gameCategory);
-            assertThat(entityManager.find(GameCategory.class, gameCategory.getId()).getName()).isEqualTo(newName);
+
+        gameCategoryRepository.deleteById(gameCategory.getId());
+
+
+        Optional<GameCategory> gameCategoryReturn = gameCategoryRepository.findById(gameCategory.getId());
+
+        Assertions.assertThat(gameCategoryReturn).isEmpty();
     }
 
-    @Test
-    void givenGameCategoryCreated_whenDelete_thenSuccess() {
-        GameCategory gameCategory = GameCategory.builder().name("category name").build();
-        entityManager.persist(gameCategory);
-        gameCategoryRepository.delete(gameCategory);
-        assertThat(entityManager.find(GameCategory.class, gameCategory.getId())).isNull();
-
-    }
 }
