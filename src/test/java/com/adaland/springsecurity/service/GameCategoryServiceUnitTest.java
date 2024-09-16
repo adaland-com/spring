@@ -13,14 +13,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -196,4 +203,36 @@ class GameCategoryServiceUnitTest {
 
     }
 
+    @Test
+    void deleteGameCategory_ShouldReturnOk_WhenGameCategoryExists() {
+        long gameCategoryId=1L;
+        String name = "cooperative";
+        GameCategory gameCategory = GameCategory.builder()
+                .id(gameCategoryId)
+                .name(name).build();
+
+        GameCategoryDto gameCategoryDto = GameCategoryDto.builder()
+                .name(name)
+                .id(2L)
+                .build();
+
+        when(gameCategoryRepository.findById(gameCategoryId)).thenReturn(Optional.of(gameCategory));
+        ResponseEntity<String> response = gameCategoryServiceImpl.deleteGameCategory(gameCategoryId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(gameCategoryRepository).findById(gameCategoryId);
+        verify(gameCategoryRepository).deleteById(gameCategoryId);
+    }
+    @Test
+    public void deleteGameCategory_ShouldThrowEntityNotFoundException_WhenGameCategoryDoesNotExist() {
+        long gameCategoryId = 1L;
+
+        when(gameCategoryRepository.findById(gameCategoryId)).thenReturn(Optional.empty());
+
+
+        assertThatThrownBy(() -> gameCategoryServiceImpl.deleteGameCategory(gameCategoryId))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID, String.valueOf(gameCategoryId));
+
+   }
 }
