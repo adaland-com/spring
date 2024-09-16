@@ -1,5 +1,6 @@
 package com.adaland.springsecurity.service;
 
+import com.adaland.springsecurity.exception.EntityAlreadyExistsException;
 import com.adaland.springsecurity.exception.EntityNotFoundException;
 import com.adaland.springsecurity.mapper.GameCategoryMapper;
 import com.adaland.springsecurity.model.dao.GameCategory;
@@ -13,10 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +34,25 @@ class GameCategoryServiceUnitTest {
     @InjectMocks
     private GameCategoryServiceImpl gameCategoryServiceImpl;
 
+    @Test
+    void whenFindAll_shouldReturnGameCategoryList() {
+        String gameCategoryName1="cooperative";
+        String gameCategoryName2="family";
 
+        GameCategory gameCategory1=GameCategory.builder()
+                .name(gameCategoryName1).build();
+        GameCategory gameCategory2=GameCategory.builder()
+                .name(gameCategoryName2).build();
+
+        given(gameCategoryRepository.findAll()).willReturn(List.of(gameCategory1,gameCategory2));
+
+        List<GameCategoryDto> foundGameCategories=gameCategoryServiceImpl.findAll();
+
+        assertThat(foundGameCategories).isNotNull();
+        assertThat(foundGameCategories.size()).isEqualTo(2);
+
+
+    }
     @Test
     void whenFindById_shouldReturnGameCategory() {
         String name = "cooperative";
@@ -54,6 +76,18 @@ class GameCategoryServiceUnitTest {
         assertThat(result).usingRecursiveComparison().isEqualTo(gameCategoryDto);
 
     }
+    @Test
+    public void givenGameCategoryObject_whenGetGameCategoryById_thenThrowException() {
+        long gameCategoryId = 1;
+
+        when(gameCategoryRepository.findById(gameCategoryId)).thenThrow(new EntityNotFoundException(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID,String.valueOf(gameCategoryId)));
+
+        assertThatThrownBy(() -> gameCategoryServiceImpl.findById(gameCategoryId))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage(EntityNotFoundException.ENTITY_GAME_CATEGORY_NOT_FOUND_BY_ID, gameCategoryId);
+
+    }
+
 
     @Test
     public void whenFindById_shouldThrowsException() {
@@ -113,6 +147,28 @@ class GameCategoryServiceUnitTest {
         assertThat(result).isNotNull();
 
     }
+    @Test
+    public void whenCreateGameCategory_shouldThrowEntityAlreadyExistException() {
+        long gameCategoryId = 1L;
+        String gameCategoryName = "logical";
+        GameCategoryUpdateDto gameCategoryUpdateDto = GameCategoryUpdateDto.builder()
+                .name(gameCategoryName)
+                .build();
+
+        GameCategory gameCategory = GameCategory.builder()
+                .id(gameCategoryId)
+                .name(gameCategoryName).build();
+
+
+        when(gameCategoryRepository.findByName(gameCategoryName))
+                .thenThrow(new EntityAlreadyExistsException(EntityAlreadyExistsException.GAME_CATEGORY_AlREADY_EXISTS_MESSAGE,gameCategoryName));
+
+        assertThatThrownBy(() -> gameCategoryServiceImpl.createGameCategory(gameCategoryUpdateDto))
+                .isInstanceOf(EntityAlreadyExistsException.class)
+                .hasMessage(EntityAlreadyExistsException.GAME_CATEGORY_AlREADY_EXISTS_MESSAGE, gameCategoryName);
+
+    }
+
 
 
     @Test
