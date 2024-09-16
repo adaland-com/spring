@@ -6,6 +6,7 @@ import com.adaland.springsecurity.model.dao.GameCategory;
 import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryDto;
 import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryUpdateDto;
 import com.adaland.springsecurity.repository.GameCategoryRepository;
+import com.adaland.springsecurity.service.impl.GameCategoryServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,7 +28,7 @@ class GameCategoryServiceUnitTest {
     @Mock
     private GameCategoryMapper gameCategoryMapper;
     @InjectMocks
-    private GameCategoryService gameCategoryService;
+    private GameCategoryServiceImpl gameCategoryServiceImpl;
 
 
     @Test
@@ -47,7 +48,7 @@ class GameCategoryServiceUnitTest {
                 .thenReturn(gameCategoryDto);
 
         // When
-        GameCategoryDto result = gameCategoryService.findById(2L);
+        GameCategoryDto result = gameCategoryServiceImpl.findById(2L);
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(gameCategoryDto);
@@ -58,7 +59,7 @@ class GameCategoryServiceUnitTest {
     public void whenFindById_shouldThrowsException() {
         long id = 2;
 
-        assertThrowsExactly(EntityNotFoundException.class, () -> gameCategoryService.findById(id));
+        assertThrowsExactly(EntityNotFoundException.class, () -> gameCategoryServiceImpl.findById(id));
 
     }
 
@@ -80,7 +81,7 @@ class GameCategoryServiceUnitTest {
         when(gameCategoryMapper.fromGameCategoryToGameCategoryDto(gameCategory))
                 .thenReturn(gameCategoryDto);
         // When
-        GameCategoryDto result = gameCategoryService.findByName(name);
+        GameCategoryDto result = gameCategoryServiceImpl.findByName(name);
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(gameCategoryDto);
@@ -99,7 +100,7 @@ class GameCategoryServiceUnitTest {
         GameCategoryUpdateDto gameCategoryUpdateDto = GameCategoryUpdateDto.builder()
                 .name(CATEGORY_NAME
                 ).build();
-        when(gameCategoryMapper.fromGameCategoryDtoToGameCategory(gameCategoryUpdateDto))
+        when(gameCategoryMapper.fromGameCategoryUpdateDtoToGameCategory(gameCategoryUpdateDto))
                 .thenReturn(gameCategory);
 
         when(gameCategoryRepository.save(gameCategory)).thenReturn(gameCategory);
@@ -107,8 +108,7 @@ class GameCategoryServiceUnitTest {
         when(gameCategoryMapper.fromGameCategoryToGameCategoryDto(gameCategory))
                 .thenReturn(gameCategoryDto);
 
-
-        GameCategoryDto result = gameCategoryService.createGameCategory(gameCategoryUpdateDto);
+        GameCategoryDto result = gameCategoryServiceImpl.createGameCategory(gameCategoryUpdateDto);
 
         assertThat(result).isNotNull();
 
@@ -118,22 +118,22 @@ class GameCategoryServiceUnitTest {
     @Test
     void whenUpdateGameCategory_shouldReturnGameCategory() {
         String name = "cooperative";
-        long id = 2;
+        long gameCategoryId = 2;
         GameCategory gameCategory = GameCategory.builder()
-                .id(id)
+                .id(gameCategoryId)
                 .name(name).build();
 
         GameCategoryDto gameCategoryDto = GameCategoryDto.builder()
                 .name(name)
-                .id(id)
+                .id(gameCategoryId)
                 .build();
 
-        when(gameCategoryRepository.findById(2L)).thenReturn(Optional.of(gameCategory));
+        when(gameCategoryRepository.findById(gameCategoryId)).thenReturn(Optional.of(gameCategory));
         when(gameCategoryMapper.fromGameCategoryToGameCategoryDto(gameCategory))
                 .thenReturn(gameCategoryDto);
 
         // When
-        GameCategoryDto result = gameCategoryService.findById(2L);
+        GameCategoryDto result = gameCategoryServiceImpl.findById(gameCategoryId);
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(gameCategoryDto);
