@@ -3,6 +3,7 @@ package com.adaland.springsecurity.controller;
 import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryDto;
 import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryUpdateDto;
 import com.adaland.springsecurity.service.GameCategoryService;
+import com.adaland.springsecurity.service.impl.GameCategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
