@@ -4,6 +4,7 @@ import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryDto;
 import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryUpdateDto;
 import com.adaland.springsecurity.service.GameCategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,11 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "/api/game_categories", produces = "application/json")
 public class GameCategoryController {
 
     private final GameCategoryService gameCategoryService;
+
+    @Autowired
+    public GameCategoryController(GameCategoryService gameCategoryService) {
+        this.gameCategoryService = gameCategoryService;
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
