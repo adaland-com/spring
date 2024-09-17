@@ -92,7 +92,7 @@ class GameCategoryRepositoryTest {
 
 
     @Test
-    public void whenFindByNonExistingGameCategory_thenThrowsException() {
+    public void whenFindByNameNonExistingGameCategory_thenThrowsException() {
 
         String gameCategoryName = "nonexisting";
 
