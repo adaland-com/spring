@@ -22,7 +22,6 @@ class GameCategoryRepositoryTest {
     private GameCategoryRepository gameCategoryRepository;
 
 
-
     @Test
     public void givenGameCategoryObject_whenSave_thenReturnSavedGameCategory() {
         String gameCategoryName = "cooperative";
