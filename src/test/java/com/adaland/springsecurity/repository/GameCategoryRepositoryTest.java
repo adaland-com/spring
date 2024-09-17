@@ -50,9 +50,9 @@ class GameCategoryRepositoryTest {
         GameCategory savedGameCategory = gameCategoryRepository.save(gameCategory);
         GameCategory savedGameCategory2 = gameCategoryRepository.save(gameCategory2);
 
-        List<GameCategory> orderList = gameCategoryRepository.findAll();
+        List<GameCategory> gameCategoryList = gameCategoryRepository.findAll();
 
-        assertThat(orderList.size()).isEqualTo(2);
+        assertThat(gameCategoryList.size()).isEqualTo(2);
     }
 
     @Test
