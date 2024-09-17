@@ -21,7 +21,7 @@ class GameCategoryRepositoryTest {
     @Autowired
     private GameCategoryRepository gameCategoryRepository;
 
-    String existingCategoryName = "test category";
+
 
     @Test
     public void givenGameCategoryObject_whenSave_thenReturnSavedGameCategory() {
