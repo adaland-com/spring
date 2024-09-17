@@ -46,12 +46,14 @@ public class AuthenticationService {
                 || userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new EntityAlreadyExistsException(EntityAlreadyExistsException.USER_AlREADY_EXISTS_MESSAGE, request.getUsername());
         }
-        var user = new User();
-        user.setEmail(request.getEmail());
-        user.setName(request.getName());
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
+
+        User user  = User.builder()
+                .email(request.getEmail())
+                .name(request.getName())
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
+                .build();
         userRepository.save(user);
         emailService.sendWelcomeMessage(user.getEmail(), user.getName(), user.getUsername());
         String token = jwtService.generateToken(user, generateExtraClaims(user));
