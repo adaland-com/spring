@@ -12,7 +12,6 @@ import com.adaland.springsecurity.model.dao.Rent;
 import com.adaland.springsecurity.model.dao.RentStatus;
 import com.adaland.springsecurity.model.dto.rent.RentCreationDto;
 import com.adaland.springsecurity.model.dto.rent.RentDto;
-import com.adaland.springsecurity.model.dto.rent.RentUpdateDto;
 import com.adaland.springsecurity.repository.GameRepository;
 import com.adaland.springsecurity.repository.RentRepository;
 import com.adaland.springsecurity.repository.UserRepository;
