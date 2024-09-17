@@ -23,15 +23,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class GameServiceImpl implements GameService {
 
-    @Autowired
-    private GameRepository gameRepository;
-    @Autowired
-    private GameCategoryRepository categoryRepository;
+    private final GameRepository gameRepository;
+    private final GameCategoryRepository categoryRepository;
     private final GameMapper mapper;
+
+    @Autowired
+    public GameServiceImpl(GameRepository gameRepository, GameCategoryRepository categoryRepository, GameMapper mapper) {
+        this.gameRepository = gameRepository;
+        this.categoryRepository = categoryRepository;
+        this.mapper = mapper;
+    }
 
     public List<GameDto> findAll() {
         return gameRepository.findAll().stream()
