@@ -1,7 +1,5 @@
 package com.adaland.springsecurity.repository;
 
-import com.adaland.springsecurity.model.dao.Game;
-import com.adaland.springsecurity.model.dao.GameCategory;
 import com.adaland.springsecurity.model.dao.Rent;
 import com.adaland.springsecurity.model.dao.RentStatus;
 import org.junit.jupiter.api.Test;
@@ -28,11 +26,11 @@ class RentRepositoryTest {
 
     @Test
     public void givenRentObject_whenSave_thenReturnSavedRent() {
-        BigDecimal price =BigDecimal.valueOf(20.00);
-        LocalDate startDate= LocalDate.of(2024,6,24);
+        BigDecimal price = BigDecimal.valueOf(20.00);
+        LocalDate startDate = LocalDate.of(2024, 6, 24);
         LocalDate endDate = startDate.plusDays(7);
-        LocalDateTime localDateTime=LocalDateTime.now();
-        RentStatus status =RentStatus.ACTIVE;
+        LocalDateTime localDateTime = LocalDateTime.now();
+        RentStatus status = RentStatus.ACTIVE;
         boolean isSettled = false;
 
         Rent rent = Rent.builder()
@@ -56,13 +54,14 @@ class RentRepositoryTest {
         assertThat(savedRent.getStatus()).isEqualTo(status);
         assertThat(savedRent.isSettled()).isEqualTo(isSettled);
     }
+
     @Test
     public void givenRentObject_whenFindAll_thenReturnRentList() {
-        BigDecimal price =BigDecimal.valueOf(20.00);
-        LocalDate startDate= LocalDate.of(2024,6,24);
+        BigDecimal price = BigDecimal.valueOf(20.00);
+        LocalDate startDate = LocalDate.of(2024, 6, 24);
         LocalDate endDate = startDate.plusDays(7);
-        LocalDateTime localDateTime=LocalDateTime.now();
-        RentStatus status =RentStatus.ACTIVE;
+        LocalDateTime localDateTime = LocalDateTime.now();
+        RentStatus status = RentStatus.ACTIVE;
         boolean isSettled = false;
 
         Rent rent = Rent.builder()
@@ -75,11 +74,11 @@ class RentRepositoryTest {
                 .isSettled(isSettled)
                 .build();
 
-        BigDecimal price2 =BigDecimal.valueOf(120.00);
-        LocalDate startDate2= LocalDate.of(2024,6,24);
+        BigDecimal price2 = BigDecimal.valueOf(120.00);
+        LocalDate startDate2 = LocalDate.of(2024, 6, 24);
         LocalDate endDate2 = startDate.plusDays(7);
-        LocalDateTime localDateTime2=LocalDateTime.now();
-        RentStatus status2 =RentStatus.ACTIVE;
+        LocalDateTime localDateTime2 = LocalDateTime.now();
+        RentStatus status2 = RentStatus.ACTIVE;
         boolean isSettled2 = false;
 
         Rent rent2 = Rent.builder()
@@ -98,16 +97,16 @@ class RentRepositoryTest {
         List<Rent> gameList = rentRepository.findAll();
 
         assertThat(gameList.size()).isEqualTo(2);
-        assertThat(gameList.containsAll(List.of(savedRent,savedRent2)));
+        assertThat(gameList.containsAll(List.of(savedRent, savedRent2)));
     }
 
     @Test
     public void givenRentObject_whenFindById_thenReturnSavedRent() {
-        BigDecimal price =BigDecimal.valueOf(20.00);
-        LocalDate startDate= LocalDate.of(2024,6,24);
+        BigDecimal price = BigDecimal.valueOf(20.00);
+        LocalDate startDate = LocalDate.of(2024, 6, 24);
         LocalDate endDate = startDate.plusDays(7);
-        LocalDateTime localDateTime=LocalDateTime.now();
-        RentStatus status =RentStatus.ACTIVE;
+        LocalDateTime localDateTime = LocalDateTime.now();
+        RentStatus status = RentStatus.ACTIVE;
         boolean isSettled = false;
 
         Rent rent = Rent.builder()
@@ -135,11 +134,11 @@ class RentRepositoryTest {
 
     @Test
     public void givenRentObject_whenUpdate_thenReturnUpdatedRent() {
-        BigDecimal price =BigDecimal.valueOf(20.00);
-        LocalDate startDate= LocalDate.of(2024,6,24);
+        BigDecimal price = BigDecimal.valueOf(20.00);
+        LocalDate startDate = LocalDate.of(2024, 6, 24);
         LocalDate endDate = startDate.plusDays(7);
-        LocalDateTime localDateTime=LocalDateTime.now();
-        RentStatus status =RentStatus.ACTIVE;
+        LocalDateTime localDateTime = LocalDateTime.now();
+        RentStatus status = RentStatus.ACTIVE;
         boolean isSettled = false;
 
         Rent rent = Rent.builder()
