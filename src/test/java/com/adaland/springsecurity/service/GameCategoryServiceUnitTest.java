@@ -57,8 +57,6 @@ class GameCategoryServiceUnitTest {
 
         assertThat(foundGameCategories).isNotNull();
         assertThat(foundGameCategories.size()).isEqualTo(2);
-
-
     }
     @Test
     void whenFindById_shouldReturnGameCategory() {
@@ -81,7 +79,6 @@ class GameCategoryServiceUnitTest {
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(gameCategoryDto);
-
     }
     @Test
     public void givenGameCategoryObject_whenFindByIdGameCategory_thenThrowException() {
@@ -117,7 +114,6 @@ class GameCategoryServiceUnitTest {
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(gameCategoryDto);
-
     }
     @Test
     public void givenGameCategoryObject_whenFindByNameGameCategory_thenThrowException() {
@@ -154,7 +150,6 @@ class GameCategoryServiceUnitTest {
         GameCategoryDto result = gameCategoryServiceImpl.createGameCategory(gameCategoryUpdateDto);
 
         assertThat(result).isNotNull();
-
     }
     @Test
     public void whenCreateGameCategory_shouldThrowEntityAlreadyExistException() {
@@ -175,7 +170,6 @@ class GameCategoryServiceUnitTest {
         assertThatThrownBy(() -> gameCategoryServiceImpl.createGameCategory(gameCategoryUpdateDto))
                 .isInstanceOf(EntityAlreadyExistsException.class)
                 .hasMessage(EntityAlreadyExistsException.GAME_CATEGORY_AlREADY_EXISTS_MESSAGE, gameCategoryName);
-
     }
 
 
@@ -202,7 +196,6 @@ class GameCategoryServiceUnitTest {
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(gameCategoryDto);
-
     }
 
     @Test
