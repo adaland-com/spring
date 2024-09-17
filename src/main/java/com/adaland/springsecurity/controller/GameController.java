@@ -3,8 +3,11 @@ package com.adaland.springsecurity.controller;
 import com.adaland.springsecurity.model.dto.game.GameCreationDto;
 import com.adaland.springsecurity.model.dto.game.GameDto;
 import com.adaland.springsecurity.model.dto.game.GameUpdateDto;
+import com.adaland.springsecurity.service.GameCategoryService;
 import com.adaland.springsecurity.service.GameService;
+import com.adaland.springsecurity.service.impl.GameServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,11 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "/api/games", produces = "application/json")
 public class GameController {
 
     private final GameService gameService;
+
+
+    @Autowired
+    public GameController(GameService gameService) {
+        this.gameService = gameService;
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
