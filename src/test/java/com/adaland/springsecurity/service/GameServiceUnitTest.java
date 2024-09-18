@@ -4,7 +4,6 @@ import com.adaland.springsecurity.exception.EntityNotFoundException;
 import com.adaland.springsecurity.mapper.GameMapper;
 import com.adaland.springsecurity.model.dao.Game;
 import com.adaland.springsecurity.model.dao.GameCategory;
-import com.adaland.springsecurity.model.dao.GameStatus;
 import com.adaland.springsecurity.model.dto.game.GameDto;
 import com.adaland.springsecurity.model.dto.game.GameUpdateDto;
 import com.adaland.springsecurity.model.dto.gameCategory.GameCategoryDto;
@@ -33,7 +32,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class GameServiceTest {
+class GameServiceUnitTest {
     @Mock
     private GameRepository gameRepository;
     @Mock
